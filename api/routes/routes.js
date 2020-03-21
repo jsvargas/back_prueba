@@ -31,14 +31,18 @@ router.get('/getUsers', checkAuth.auth_admin, controller.getUsers);
 
 router.post('/editUser', checkAuth.auth_admin, controller.editUser);
 
-router.post('/deleteUser', checkAuth.auth_admin, controller.editUser);
+router.post('/deleteUser', checkAuth.auth_admin, controller.deleteUser);
 
-router.get('/getBooks', checkAuth.auth_normal, controller.getBooks);
-
-router.get('/getBooksFull', checkAuth.auth_admin, controller.getBooksFull);
+router.get('/getBooks', controller.getBooks);
 
 router.post('/addBook', checkAuth.auth_admin, controller.addBook);
 
-router.post('/editBook', checkAuth.auth_admin, controller.addBook);
+router.post('/editBook', checkAuth.auth_admin, controller.editBook);
+
+router.post('/deleteBook', checkAuth.auth_admin, controller.deleteBook);
 
 router.post('/reserveBook', checkAuth.auth_normal, controller.reserveBook);
+
+router.post('/returnBook', checkAuth.auth_normal, controller.returnBook);
+
+router.get('/getReservedBooks', checkAuth.auth_normal, controller.getReservedBooks);
