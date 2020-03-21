@@ -1,8 +1,7 @@
 const { Pool } = require('pg')
 
 
-//Reemplazar con variables de ambiente
-//const pool = new Pool();
+//Conexión al Pool de la base de datos
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: true,

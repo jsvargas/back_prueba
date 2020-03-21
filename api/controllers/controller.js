@@ -6,6 +6,11 @@ let logger = require('../config/logger')(path.basename(__filename, '.js'));
 const db = require('../db/db')
 require('dotenv').config();
 
+//  Método login
+//  body {
+//      username: String,
+//      password: String
+//  } 
 exports.login = function(req, res) {
     console.log("1");
     if (!req.body || !req.body.password || !req.body.username) {
@@ -64,6 +69,11 @@ exports.login = function(req, res) {
 
 }
 
+//  Método Register
+//  body {
+//      username: String,
+//      password: String
+//  } 
 exports.register = function(req, res) {
     console.log("2");
     bcrypt.hash(req.body.password, 10, (errb, hash) => {
@@ -89,6 +99,11 @@ exports.register = function(req, res) {
     })
 };
 
+//  Método getUsers
+//  Obtiene la lista de usuarios diferentes al usuario que realiza la petición
+//  userData {
+//      id: int
+//  } 
 exports.getUsers = function(req, res) {
     console.log("3");
     const query = {
@@ -106,6 +121,12 @@ exports.getUsers = function(req, res) {
     })
 }
 
+//  Método editUser
+//  Cambia el tipo de un usuario identificado por el id 
+//  body {
+//      id: int,
+//      type: int
+//  } 
 exports.editUser = function(req, res) {
     console.log("4");
     if (!req.body || !req.body.id || !req.body.type) {
@@ -127,6 +148,11 @@ exports.editUser = function(req, res) {
     })
 }
 
+//  Método deleteUser
+//  Elimina el usuario identificado por el id y libera todos los libros que tenía reservados
+//  body {
+//      id: int
+//  } 
 exports.deleteUser = function(req, res) {
     if (!req.body || !req.body.id) {
         logger.error("Bad request");
@@ -161,6 +187,8 @@ exports.deleteUser = function(req, res) {
     
 }
 
+//  Método getBooks
+//  Obtiene la lista de los libros 
 exports.getBooks = function(req, res) {
     console.log("6");
     const query = {
@@ -177,22 +205,14 @@ exports.getBooks = function(req, res) {
     })
 }
 
-exports.getBooksFull = function(req, res) {
-    console.log("7");
-    const query = {
-        name: 'get-books-full',
-        text: 'SELECT * FROM books'
-    }
-    db.query(query, (err, rows) => {
-        if (err) {
-            logger.error(err);
-            return res.status(500).send({ "errorCode": "3", "errorMessage": "Error on server" });
-        }
-        logger.info("Books fetched");
-        res.status(200).send({ "rows": rows.rows });
-    })
-}
-
+//  Método addBook
+//  Agrega un nuevo libro a la Biblioteca según los parámetros establecidos
+//  body {
+//      title: String,
+//      author: String,
+//      description: String,
+//      urlimage: String optional
+//  } 
 exports.addBook = function(req, res) {
     console.log("9");
     if (!req.body || !req.body.title || !req.body.author || !req.body.description) {
@@ -220,6 +240,15 @@ exports.addBook = function(req, res) {
     })
 }
 
+//  Método editBook
+//  Edita un libro de la Biblioteca según los parámetros establecidos y el id 
+//  body {
+//      id: int,
+//      title: String,
+//      author: String,
+//      description: String
+//      urlimage: String
+//  } 
 exports.editBook = function(req, res) {
     console.log("10");
     if (!req.body || !req.body.title || !req.body.author || !req.body.id || !req.body.description) {
@@ -241,6 +270,11 @@ exports.editBook = function(req, res) {
     })
 }
 
+//  Método deleteBook
+//  Elimina un libro de la Biblioteca a partir de su ID
+//  body {
+//      id: int
+//  } 
 exports.deleteBook = function(req, res) {
     if (!req.body || !req.body.id) {
         logger.error("Bad request");
@@ -261,7 +295,14 @@ exports.deleteBook = function(req, res) {
     })
 }
 
-
+//  Método reserveBook
+//  Reserva un libro a nombre del usuario identificado por el id del token (la sesión)
+//  body {
+//      id: int
+//  } 
+//  userData {
+//      id: int
+//  } 
 exports.reserveBook = function(req, res) {
     console.log("10");
     if (!req.body || !req.body.id || !req.userData.id) {
@@ -283,6 +324,14 @@ exports.reserveBook = function(req, res) {
     })
 }
 
+//  Método returnBook
+//  Devuelve un libro a nombre del usuario identificado por el id del token (la sesión)
+//  body {
+//      id: int
+//  } 
+//  userData {
+//      id: int
+//  } 
 exports.returnBook = function(req, res) {
     if (!req.body || !req.body.id || !req.userData.id) {
         logger.error("Bad request");
@@ -303,6 +352,11 @@ exports.returnBook = function(req, res) {
     })
 }
 
+//  Método getReservedBooks
+//  Devuelve la lista de los libros reservados a nomrbe del usuario de la sesión
+//  userData {
+//      id: int
+//  } 
 exports.getReservedBooks = function(req, res) {
     if (!req.userData.id) {
         logger.error("Bad request");

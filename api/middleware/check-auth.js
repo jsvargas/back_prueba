@@ -3,6 +3,7 @@ const path = require('path');
 const logger = require('../config/logger')(path.basename(__filename, '.js'));
 
 
+//Valida que el usuario esté autenticado con un JWT válido
 exports.auth_normal = function(req, res, next) {
     console.log("normal_auth");
     try {
@@ -19,7 +20,7 @@ exports.auth_normal = function(req, res, next) {
     }
 };
 
-
+//Valida que el usuario esté autenticado con un JWT válido y que sea administrador
 exports.auth_admin = function(req, res, next) {
     console.log("admin auth");
     try {

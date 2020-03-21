@@ -23,17 +23,23 @@ router.use(bodyParser.json({
 
 router.use(cors());
 
+//Rutas públicas
+
 router.post('/login', controller.login);
 
 router.post('/register', controller.register);
 
-router.get('/getUsers', checkAuth.auth_admin, controller.getUsers);
-
-router.post('/editUser', checkAuth.auth_admin, controller.editUser);
-
-router.post('/deleteUser', checkAuth.auth_admin, controller.deleteUser);
-
 router.get('/getBooks', controller.getBooks);
+
+//Rutas privadas para usuarios normales
+
+router.post('/reserveBook', checkAuth.auth_normal, controller.reserveBook);
+
+router.post('/returnBook', checkAuth.auth_normal, controller.returnBook);
+
+router.get('/getReservedBooks', checkAuth.auth_normal, controller.getReservedBooks);
+
+//Rutas privadas para usuarios administradores
 
 router.post('/addBook', checkAuth.auth_admin, controller.addBook);
 
@@ -41,8 +47,8 @@ router.post('/editBook', checkAuth.auth_admin, controller.editBook);
 
 router.post('/deleteBook', checkAuth.auth_admin, controller.deleteBook);
 
-router.post('/reserveBook', checkAuth.auth_normal, controller.reserveBook);
+router.get('/getUsers', checkAuth.auth_admin, controller.getUsers);
 
-router.post('/returnBook', checkAuth.auth_normal, controller.returnBook);
+router.post('/editUser', checkAuth.auth_admin, controller.editUser);
 
-router.get('/getReservedBooks', checkAuth.auth_normal, controller.getReservedBooks);
+router.post('/deleteUser', checkAuth.auth_admin, controller.deleteUser);

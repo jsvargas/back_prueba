@@ -17,6 +17,7 @@ var transport = new (transports.DailyRotateFile)({
 transport.on('rotate', function(oldFilename, newFilename) {
 });
 
+//Nueva instancia del Logger
 const logger = createLogger({
   format: combine(
   	timestamp(),
